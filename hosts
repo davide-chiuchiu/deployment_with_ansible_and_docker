@@ -1,0 +1,2 @@
+[TestServerGroup]
+TestServer ansible_host=hwsrv-745125.hostwindsdns.com ansible_user=root
