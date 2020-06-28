@@ -6,5 +6,15 @@
   tasks:
     - name: Install pip
       apt: name=python-pip state=present
+
     - name: install docker-py package
       pip: name=docker-py
+
+    - name: copy Dockerfile to remote host
+      copy:
+        src: Dockerfile.txt
+        dest: $HOME/Dockerfile.txt
+        remote_src: no
+
+    - name: Build Docker image from Dockerfile
+      command: docker build -f $HOME/Dockerfile.txt .
