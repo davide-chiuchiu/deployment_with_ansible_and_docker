@@ -12,12 +12,26 @@
 
     - name: Copy Dockerfile to remote host
       copy:
-        src: Dockerfile.txt
-        dest: $HOME/Dockerfile.txt
+        src: Dockerfile
+        dest: $HOME/Dockerfile
         remote_src: no
 
-    - name: Build Docker image from Dockerfile
-      command: docker build -f $HOME/Dockerfile.txt .
+    - name: Copy html file to remote host
+      copy:
+        src: simple_html_page.html
+        dest: $HOME/simple_html_page.html
+        remote_src: no
 
-    - name: Check if docker is running
-      shell: docker ps
+    - name: Stop and prune current Docker containers to free port 80
+      shell: |
+        docker stop $(docker ps -a -q)
+        docker system prune -f
+
+    - name: Build Docker image from Dockerfile
+      command: docker build -t html-server-image:v1 -f $HOME/Dockerfile .
+
+    - name: deploy nginx server
+      command: docker run -d -p 80:80 html-server-image:v1
+
+
+

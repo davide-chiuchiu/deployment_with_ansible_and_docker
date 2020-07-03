@@ -1,6 +1,0 @@
-FROM ubuntu:18.04
-RUN apt-get update && apt-get upgrade
-RUN apt-get install -y nginx
-RUN echo 'Default page. Nginx is in your container. ' \
->/usr/share/nginx/html/index.html
-EXPOSE 80
