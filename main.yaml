@@ -30,7 +30,7 @@
     - name: Build Docker image from Dockerfile
       command: docker build -t html-server-image:v1 -f $HOME/Dockerfile .
 
-    - name: deploy nginx server
+    - name: Deploy docker image as a container
       command: docker run -d -p 80:80 html-server-image:v1
 
 

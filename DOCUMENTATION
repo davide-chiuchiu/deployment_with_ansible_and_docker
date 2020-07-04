@@ -1,0 +1,20 @@
+To use the files in this archieve to initialize a nginx web server from a Docker container on the dedicated server hwsrv-745125.hostwindsdns.com, follows these steps:
+1 - Open a terminal and extract the files from the .zip arxiv to the desired folder. For Unix command line use 
+      $ unzip Ansible_project_archieve.zip -d $HOME/Ansible_project
+    Note that all file inside the archive are needed for a correct execution.
+2 - Change directory to the new unzipped one
+      $ cd $HOME/Ansible_project
+3 - Initialize the docker container on the server hwsrv-745125.hostwindsdns.com with the "main.yaml" playbook by inputting
+      $ ansible-playbook --vault-password-file=vault_pass.txt main.yaml
+    The playbook instructs the server to
+         - install python and the docker command line on the server.
+         - copy the dockerfile "Dockerfile" and the html page "simple_html_page.html" to the server
+         - stop and prune all existing containers in the server to free port 80.
+         - build docker image using information from the "Dockerfile" file
+         - deploy the docker image as container 
+    Note: access credential to the server are encrypted with ansible_vault. Vault password is stored in "vault_pass.txt"  
+
+To check that the nginx web server is currently running from the Docker container, open a terminal and input
+    $ curl hwsrv-745125.hostwindsdns.com:80
+This should connect to the nginx web server via port 80. The output should be:
+    $ This file has been created on 04/06/20
