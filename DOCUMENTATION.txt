@@ -1,0 +1,21 @@
+To use the files in this archive to initialize a nginx web server from a Docker container on the dedicated server hwsrv-745125.hostwindsdns.com, follows these steps:
+0 - [Only if you have connected via ssh to the remote server hwsrv-745125.hostwindsdns.com before the server has been restarted for maintenance reasons] Remove the "known_host" file containing all existing ssh host keys with
+      $ rm $HOME/.ssh/known_hosts
+     Step 3 will crash due to ssh keys mismatch if the ssh keys of the server have changed from your last login into the server. This situation may occur if the server is being restarted for maintenance or other contingencies. 
+1 - Extract the files from the .zip archieve to a desired folder, for example in $HOME/Ansible_project. Note that all file inside the archive are needed for a correct execution.
+2 - Open a terminal and go to the directory containing the unzipped files with
+      $ cd $HOME/Ansible_project
+3 - Deploy the docker container that host an html page on the server hwsrv-745125.hostwindsdns.com with the "main.yaml" playbook by inputting
+      $ ansible-playbook --vault-password-file=vault_pass.txt main.yaml
+    The playbook instructs the server to
+         - install python, the docker-py package and the docker command line on the server.
+         - copy the dockerfile "Dockerfile" and the html page "simple_html_page.html" to the server.
+         - stop and prune all existing containers in the server to free port 80.
+         - build docker image using information from the "Dockerfile" file. The Docker image comprises of two layers. The first one installs all system updates and nginx. The second layer initialize nginx and replace the default nginx html page with "simple_html_page.html"
+         - deploy the docker image as container 
+    Note: ssh password to the server is encrypted with ansible_vault and the vault password is stored in "vault_pass.txt". Automatic password decryption is warranted by the local configurations in "ansible.cfg" and "inventory.yaml", and by the --vault-password-file=vault_pass.txt tag.
+
+To check that the nginx web server is currently running from the Docker container, open a terminal and input
+    $ curl hwsrv-745125.hostwindsdns.com:80
+This should connect to the nginx web server via port 80. The output should be:
+    $ This file has been created on 04/06/20
