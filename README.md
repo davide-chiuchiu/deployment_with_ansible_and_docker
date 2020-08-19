@@ -1,1 +1,3 @@
-Ansible_project
+This project contains the essential files to deploy a docker container on a linux server with ansible. The docker container installs nginx and than hosts an html page via an nginx server. Documentation files instruct how to perform the deployment and the logic behind the code. 
+
+WARNING: this project deploys the docker container on a linux server on Hostwinds. however, I am not paying for the server anymore. Hence, the code will fail to execute correctly.
